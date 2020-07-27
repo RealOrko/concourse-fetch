@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Please run 'docker-compose up -d' from a fresh clone of https://github.com/RealOrko/concourse-docker first.
+
+# CREDHUB
+
+CREDHUB_CONTAINER_ID=$(docker ps | grep pcfseceng/credhub | awk '{print $1}')
+
+IFS=
+docker exec -it $CREDHUB_CONTAINER_ID /app/credhub-install.sh
+docker exec -it $CREDHUB_CONTAINER_ID credhub set -n /concourse/main/aws_default_region -t value -v $AWS_DEFAULT_REGION
+docker exec -it $CREDHUB_CONTAINER_ID credhub set -n /concourse/main/aws_secret_access_key -t value -v $AWS_SECRET_ACCESS_KEY
+docker exec -it $CREDHUB_CONTAINER_ID credhub set -n /concourse/main/aws_access_key_id -t value -v $AWS_ACCESS_KEY_ID
+docker exec -it $CREDHUB_CONTAINER_ID credhub set -n /concourse/main/aws_s3_bucket_name -t value -v $AWS_S3_BUCKET_NAME
+docker exec -it $CREDHUB_CONTAINER_ID credhub set -n /concourse/main/github_private_key -t value -v $GITHUB_PRIVATE_KEY
+
+# FLY
+
+fly --target local-dev login -n main -c http://localhost:8080/ -u test -p test
+fly -t local-dev sync
+fly -t local-dev validate-pipeline -c $PWD/ci/fetch.yml
+fly -t local-dev set-pipeline -p $PIPELINE_NAME -c $PWD/ci/fetch.yml -n
+fly -t local-dev unpause-pipeline -p $PIPELINE_NAME
+fly -t local-dev trigger-job -j $PIPELINE_NAME/$PIPELINE_JOB_NAME
