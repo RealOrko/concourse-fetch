@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-# Please run 'docker-compose up -d' from a fresh clone of https://github.com/RealOrko/concourse-docker first.
-
-fly -t local-dev intercept -j $PIPELINE_NAME/$PIPELINE_JOB_NAME
