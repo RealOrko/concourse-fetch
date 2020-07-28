@@ -1,0 +1,32 @@
+
+resources: 
+
+  - name: concourse_fetch_source
+    uri: git@github.com:RealOrko/concourse-fetch.git
+    private_key: ((github_private_key))
+    branch: master
+    version_branch: versions
+
+  - name: dotnet_cli_zip_source
+    uri: git@github.com:RealOrko/dotnet-cli-zip.git
+    private_key: ((github_private_key))
+    branch: master
+    version_branch: versions
+
+  - name: dotnet_cli_ghinstaller_source
+    uri: git@github.com:RealOrko/dotnet-cli-ghinstaller.git
+    private_key: ((github_private_key))
+    branch: master
+    version_branch: versions
+
+  - name: dotnet_cli_yamlist_source
+    uri: git@github.com:RealOrko/dotnet-cli-yamlist.git
+    private_key: ((github_private_key))
+    branch: master
+    version_branch: versions
+
+  - name: sql_d_source
+    uri: git@github.com:RealOrko/sql-d.git
+    private_key: ((github_private_key))
+    branch: master
+    version_branch: versions

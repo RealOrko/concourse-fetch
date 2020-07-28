@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+git checkout --orphan versions
+git rm -rf .
+git commit --allow-empty -m "Versions commit"
+git push origin versions

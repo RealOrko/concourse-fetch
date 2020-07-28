@@ -1,0 +1,397 @@
+
+jobs:
+
+- name: copy_concourse_fetch_source_to_s3
+  serial: true
+  plan:
+
+  - get: concourse_fetch_source
+    trigger: true
+
+  - get: concourse_fetch_source_semver
+    params: 
+      bump: patch
+
+  - task: create_concourse_fetch_source_tarball
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: concourse_fetch_source
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          pushd concourse_fetch_source
+          tar -cvf ../concourse_fetch_source_tarball/concourse_fetch_source.tar.gz *
+          popd
+      outputs:
+      - name: concourse_fetch_source_tarball
+
+  - task: push_concourse_fetch_source_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: concourse_fetch_source_tarball
+      - name: concourse_fetch_source_semver
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          apt-get update -y
+          apt-get install awscli -y
+          aws sts get-caller-identity
+          aws s3 cp concourse_fetch_source_tarball/concourse_fetch_source.tar.gz s3://((aws_s3_bucket_name))/
+          cp concourse_fetch_source_semver/version concourse_fetch_source_semver/concourse_fetch_source.tar.gz.version
+          aws s3 cp concourse_fetch_source_semver/concourse_fetch_source.tar.gz.version s3://((aws_s3_bucket_name))/
+
+  - put: concourse_fetch_source_semver
+    params: 
+      bump: patch
+
+- name: copy_dotnet_cli_zip_source_to_s3
+  serial: true
+  plan:
+
+  - get: dotnet_cli_zip_source
+    trigger: true
+
+  - get: dotnet_cli_zip_source_semver
+    params: 
+      bump: patch
+
+  - task: create_dotnet_cli_zip_source_tarball
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_zip_source
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          pushd dotnet_cli_zip_source
+          tar -cvf ../dotnet_cli_zip_source_tarball/dotnet_cli_zip_source.tar.gz *
+          popd
+      outputs:
+      - name: dotnet_cli_zip_source_tarball
+
+  - task: push_dotnet_cli_zip_source_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_zip_source_tarball
+      - name: dotnet_cli_zip_source_semver
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          apt-get update -y
+          apt-get install awscli -y
+          aws sts get-caller-identity
+          aws s3 cp dotnet_cli_zip_source_tarball/dotnet_cli_zip_source.tar.gz s3://((aws_s3_bucket_name))/
+          cp dotnet_cli_zip_source_semver/version dotnet_cli_zip_source_semver/dotnet_cli_zip_source.tar.gz.version
+          aws s3 cp dotnet_cli_zip_source_semver/dotnet_cli_zip_source.tar.gz.version s3://((aws_s3_bucket_name))/
+
+  - put: dotnet_cli_zip_source_semver
+    params: 
+      bump: patch
+
+- name: copy_dotnet_cli_ghinstaller_source_to_s3
+  serial: true
+  plan:
+
+  - get: dotnet_cli_ghinstaller_source
+    trigger: true
+
+  - get: dotnet_cli_ghinstaller_source_semver
+    params: 
+      bump: patch
+
+  - task: create_dotnet_cli_ghinstaller_source_tarball
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_ghinstaller_source
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          pushd dotnet_cli_ghinstaller_source
+          tar -cvf ../dotnet_cli_ghinstaller_source_tarball/dotnet_cli_ghinstaller_source.tar.gz *
+          popd
+      outputs:
+      - name: dotnet_cli_ghinstaller_source_tarball
+
+  - task: push_dotnet_cli_ghinstaller_source_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_ghinstaller_source_tarball
+      - name: dotnet_cli_ghinstaller_source_semver
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          apt-get update -y
+          apt-get install awscli -y
+          aws sts get-caller-identity
+          aws s3 cp dotnet_cli_ghinstaller_source_tarball/dotnet_cli_ghinstaller_source.tar.gz s3://((aws_s3_bucket_name))/
+          cp dotnet_cli_ghinstaller_source_semver/version dotnet_cli_ghinstaller_source_semver/dotnet_cli_ghinstaller_source.tar.gz.version
+          aws s3 cp dotnet_cli_ghinstaller_source_semver/dotnet_cli_ghinstaller_source.tar.gz.version s3://((aws_s3_bucket_name))/
+
+  - put: dotnet_cli_ghinstaller_source_semver
+    params: 
+      bump: patch
+
+- name: copy_dotnet_cli_yamlist_source_to_s3
+  serial: true
+  plan:
+
+  - get: dotnet_cli_yamlist_source
+    trigger: true
+
+  - get: dotnet_cli_yamlist_source_semver
+    params: 
+      bump: patch
+
+  - task: create_dotnet_cli_yamlist_source_tarball
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_yamlist_source
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          pushd dotnet_cli_yamlist_source
+          tar -cvf ../dotnet_cli_yamlist_source_tarball/dotnet_cli_yamlist_source.tar.gz *
+          popd
+      outputs:
+      - name: dotnet_cli_yamlist_source_tarball
+
+  - task: push_dotnet_cli_yamlist_source_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: dotnet_cli_yamlist_source_tarball
+      - name: dotnet_cli_yamlist_source_semver
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          apt-get update -y
+          apt-get install awscli -y
+          aws sts get-caller-identity
+          aws s3 cp dotnet_cli_yamlist_source_tarball/dotnet_cli_yamlist_source.tar.gz s3://((aws_s3_bucket_name))/
+          cp dotnet_cli_yamlist_source_semver/version dotnet_cli_yamlist_source_semver/dotnet_cli_yamlist_source.tar.gz.version
+          aws s3 cp dotnet_cli_yamlist_source_semver/dotnet_cli_yamlist_source.tar.gz.version s3://((aws_s3_bucket_name))/
+
+  - put: dotnet_cli_yamlist_source_semver
+    params: 
+      bump: patch
+
+- name: copy_sql_d_source_to_s3
+  serial: true
+  plan:
+
+  - get: sql_d_source
+    trigger: true
+
+  - get: sql_d_source_semver
+    params: 
+      bump: patch
+
+  - task: create_sql_d_source_tarball
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: sql_d_source
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          pushd sql_d_source
+          tar -cvf ../sql_d_source_tarball/sql_d_source.tar.gz *
+          popd
+      outputs:
+      - name: sql_d_source_tarball
+
+  - task: push_sql_d_source_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: ubuntu
+      inputs: 
+      - name: sql_d_source_tarball
+      - name: sql_d_source_semver
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          apt-get update -y
+          apt-get install awscli -y
+          aws sts get-caller-identity
+          aws s3 cp sql_d_source_tarball/sql_d_source.tar.gz s3://((aws_s3_bucket_name))/
+          cp sql_d_source_semver/version sql_d_source_semver/sql_d_source.tar.gz.version
+          aws s3 cp sql_d_source_semver/sql_d_source.tar.gz.version s3://((aws_s3_bucket_name))/
+
+  - put: sql_d_source_semver
+    params: 
+      bump: patch
+
+
+resources:
+
+- name: concourse_fetch_source
+  type: git
+  source:
+    branch: master
+    private_key: ((github_private_key))
+    uri: git@github.com:RealOrko/concourse-fetch.git
+
+- name: dotnet_cli_zip_source
+  type: git
+  source:
+    branch: master
+    private_key: ((github_private_key))
+    uri: git@github.com:RealOrko/dotnet-cli-zip.git
+
+- name: dotnet_cli_ghinstaller_source
+  type: git
+  source:
+    branch: master
+    private_key: ((github_private_key))
+    uri: git@github.com:RealOrko/dotnet-cli-ghinstaller.git
+
+- name: dotnet_cli_yamlist_source
+  type: git
+  source:
+    branch: master
+    private_key: ((github_private_key))
+    uri: git@github.com:RealOrko/dotnet-cli-yamlist.git
+
+- name: sql_d_source
+  type: git
+  source:
+    branch: master
+    private_key: ((github_private_key))
+    uri: git@github.com:RealOrko/sql-d.git
+
+
+- name: concourse_fetch_source_semver
+  type: semver
+  source:
+    driver: git
+    branch: versions
+    uri: git@github.com:RealOrko/concourse-fetch.git
+    file: concourse_fetch_source_version
+    private_key: |
+      ((github_private_key))
+
+- name: dotnet_cli_zip_source_semver
+  type: semver
+  source:
+    driver: git
+    branch: versions
+    uri: git@github.com:RealOrko/dotnet-cli-zip.git
+    file: dotnet_cli_zip_source_version
+    private_key: |
+      ((github_private_key))
+
+- name: dotnet_cli_ghinstaller_source_semver
+  type: semver
+  source:
+    driver: git
+    branch: versions
+    uri: git@github.com:RealOrko/dotnet-cli-ghinstaller.git
+    file: dotnet_cli_ghinstaller_source_version
+    private_key: |
+      ((github_private_key))
+
+- name: dotnet_cli_yamlist_source_semver
+  type: semver
+  source:
+    driver: git
+    branch: versions
+    uri: git@github.com:RealOrko/dotnet-cli-yamlist.git
+    file: dotnet_cli_yamlist_source_version
+    private_key: |
+      ((github_private_key))
+
+- name: sql_d_source_semver
+  type: semver
+  source:
+    driver: git
+    branch: versions
+    uri: git@github.com:RealOrko/sql-d.git
+    file: sql_d_source_version
+    private_key: |
+      ((github_private_key))
+
