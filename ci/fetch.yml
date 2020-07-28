@@ -16,7 +16,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: concourse_fetch_source
       run:
@@ -35,7 +35,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: concourse_fetch_source_tarball
       - name: concourse_fetch_source_semver
@@ -48,8 +48,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp concourse_fetch_source_tarball/concourse_fetch_source.tar.gz s3://((aws_s3_bucket_name))/
           cp concourse_fetch_source_semver/version concourse_fetch_source_semver/concourse_fetch_source.tar.gz.version
@@ -73,7 +71,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_zip_source
       run:
@@ -92,7 +90,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_zip_source_tarball
       - name: dotnet_cli_zip_source_semver
@@ -105,8 +103,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp dotnet_cli_zip_source_tarball/dotnet_cli_zip_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_zip_source_semver/version dotnet_cli_zip_source_semver/dotnet_cli_zip_source.tar.gz.version
@@ -130,7 +126,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_ghinstaller_source
       run:
@@ -149,7 +145,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_ghinstaller_source_tarball
       - name: dotnet_cli_ghinstaller_source_semver
@@ -162,8 +158,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp dotnet_cli_ghinstaller_source_tarball/dotnet_cli_ghinstaller_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_ghinstaller_source_semver/version dotnet_cli_ghinstaller_source_semver/dotnet_cli_ghinstaller_source.tar.gz.version
@@ -187,7 +181,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_yamlist_source
       run:
@@ -206,7 +200,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: dotnet_cli_yamlist_source_tarball
       - name: dotnet_cli_yamlist_source_semver
@@ -219,8 +213,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp dotnet_cli_yamlist_source_tarball/dotnet_cli_yamlist_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_yamlist_source_semver/version dotnet_cli_yamlist_source_semver/dotnet_cli_yamlist_source.tar.gz.version
@@ -244,7 +236,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: sql_d_source
       run:
@@ -263,7 +255,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: sql_d_source_tarball
       - name: sql_d_source_semver
@@ -276,8 +268,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp sql_d_source_tarball/sql_d_source.tar.gz s3://((aws_s3_bucket_name))/
           cp sql_d_source_semver/version sql_d_source_semver/sql_d_source.tar.gz.version

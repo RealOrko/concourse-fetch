@@ -17,7 +17,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: {{name}}
       run:
@@ -36,7 +36,7 @@ jobs:
       image_resource:
         type: registry-image
         source:
-          repository: ubuntu
+          repository: realorko/aws-cli
       inputs: 
       - name: {{name}}_tarball
       - name: {{name}}_semver
@@ -49,8 +49,6 @@ jobs:
           export AWS_DEFAULT_REGION=((aws_default_region))
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
-          apt-get update -y
-          apt-get install awscli -y
           aws sts get-caller-identity
           aws s3 cp {{name}}_tarball/{{name}}.tar.gz s3://((aws_s3_bucket_name))/
           cp {{name}}_semver/version {{name}}_semver/{{name}}.tar.gz.version
