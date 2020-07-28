@@ -111,7 +111,7 @@ You could then for example release by merging master into foo, `master`->`foo`. 
 
 ### S3 versioning
 
-This repository uses the same file names to publish artifacts, so you should enable s3 bucket versioning, to support consuming these artifacts via the [s3-resource](https://github.com/concourse/s3-resource).
+This repository uses the same file names to publish artifacts, so you should enable s3 bucket versioning, to support consuming these artifacts using the `versioned_file` property via the [s3-resource](https://github.com/concourse/s3-resource).
 
 
 Happy fetching folks! :)
