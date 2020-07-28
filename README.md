@@ -113,5 +113,11 @@ You could then for example release by merging master into foo, `master`->`foo`. 
 
 This repository uses the same file names to publish artifacts, so you should enable s3 bucket versioning, to support consuming these artifacts using the `versioned_file` property via the [s3-resource](https://github.com/concourse/s3-resource).
 
+![s3-versioning](https://github.com/RealOrko/concourse-fetch/blob/master/docs/images/s3-enable-versioning.png)
+
+It is also considered good practice to make sure you
+setup an expiry rule for old versions, in my case I delete them after 5 days. 
+
+![s3-expiry](https://github.com/RealOrko/concourse-fetch/blob/master/docs/images/s3-expire-old-items.png)
 
 Happy fetching folks! :)
