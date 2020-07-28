@@ -1,12 +1,12 @@
 
 jobs:
 
-### Fetch: aws_cli_image_source ###
-- name: copy_aws_cli_image_source_to_s3
+### Fetch: aws_cli_image ###
+- name: copy_aws_cli_image_to_s3
   plan:
-  - get: aws_cli_image_source
+  - get: aws_cli_image
     trigger: true
-  - task: create_aws_cli_image_source_tarball
+  - task: create_aws_cli_image_tarball
     config:
       platform: linux
       image_resource:
@@ -14,18 +14,18 @@ jobs:
         source:
           repository: realorko/aws-cli
       inputs: 
-      - name: aws_cli_image_source
+      - name: aws_cli_image
       run:
         path: bash
         args:
         - -euc
         - |
-          pushd aws_cli_image_source
-          tar -cvf ../aws_cli_image_source_tarball/aws_cli_image_source.tar.gz *
+          pushd aws_cli_image
+          tar -cvf ../aws_cli_image_tarball/aws_cli_image.tar.gz *
           popd
       outputs: 
-      - name: aws_cli_image_source_tarball
-  - task: push_aws_cli_image_source_tarball_to_s3
+      - name: aws_cli_image_tarball
+  - task: push_aws_cli_image_tarball_to_s3
     config:
       platform: linux
       image_resource:
@@ -33,7 +33,7 @@ jobs:
         source:
           repository: realorko/aws-cli
       inputs: 
-      - name: aws_cli_image_source_tarball
+      - name: aws_cli_image_tarball
       run:
         path: bash
         args:
@@ -44,7 +44,7 @@ jobs:
           export AWS_ACCESS_KEY_ID=((aws_access_key_id))
           export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
           aws sts get-caller-identity
-          aws s3 cp aws_cli_image_source_tarball/aws_cli_image_source.tar.gz s3://((aws_s3_bucket_name))/
+          aws s3 cp aws_cli_image_tarball/aws_cli_image.tar.gz s3://((aws_s3_bucket_name))/
 
 
 ### Fetch: concourse_fetch_source ###
@@ -325,8 +325,8 @@ jobs:
 
 resources:
 
-### Image: aws_cli_image_source ###
-- name: aws_cli_image_source
+### Image: aws_cli_image ###
+- name: aws_cli_image
   type: registry-image
   source:
     repository: docker.io/realorko/aws-cli

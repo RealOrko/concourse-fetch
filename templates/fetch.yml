@@ -3,7 +3,7 @@ resources:
 
   images:
 
-  - name: aws_cli_image_source
+  - name: aws_cli_image
     type: registry-image
     repository: docker.io/realorko/aws-cli
   
