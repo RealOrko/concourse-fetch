@@ -1,17 +1,15 @@
 
 jobs:
 
+### Fetch: concourse_fetch_source ###
 - name: copy_concourse_fetch_source_to_s3
   serial: true
   plan:
-
   - get: concourse_fetch_source
     trigger: true
-
   - get: concourse_fetch_source_semver
     params: 
       bump: patch
-
   - task: create_concourse_fetch_source_tarball
     config:
       platform: linux
@@ -31,7 +29,6 @@ jobs:
           popd
       outputs:
       - name: concourse_fetch_source_tarball
-
   - task: push_concourse_fetch_source_tarball_to_s3
     config:
       platform: linux
@@ -57,22 +54,19 @@ jobs:
           aws s3 cp concourse_fetch_source_tarball/concourse_fetch_source.tar.gz s3://((aws_s3_bucket_name))/
           cp concourse_fetch_source_semver/version concourse_fetch_source_semver/concourse_fetch_source.tar.gz.version
           aws s3 cp concourse_fetch_source_semver/concourse_fetch_source.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: concourse_fetch_source_semver
     params: 
       bump: patch
 
+### Fetch: dotnet_cli_zip_source ###
 - name: copy_dotnet_cli_zip_source_to_s3
   serial: true
   plan:
-
   - get: dotnet_cli_zip_source
     trigger: true
-
   - get: dotnet_cli_zip_source_semver
     params: 
       bump: patch
-
   - task: create_dotnet_cli_zip_source_tarball
     config:
       platform: linux
@@ -92,7 +86,6 @@ jobs:
           popd
       outputs:
       - name: dotnet_cli_zip_source_tarball
-
   - task: push_dotnet_cli_zip_source_tarball_to_s3
     config:
       platform: linux
@@ -118,22 +111,19 @@ jobs:
           aws s3 cp dotnet_cli_zip_source_tarball/dotnet_cli_zip_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_zip_source_semver/version dotnet_cli_zip_source_semver/dotnet_cli_zip_source.tar.gz.version
           aws s3 cp dotnet_cli_zip_source_semver/dotnet_cli_zip_source.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: dotnet_cli_zip_source_semver
     params: 
       bump: patch
 
+### Fetch: dotnet_cli_ghinstaller_source ###
 - name: copy_dotnet_cli_ghinstaller_source_to_s3
   serial: true
   plan:
-
   - get: dotnet_cli_ghinstaller_source
     trigger: true
-
   - get: dotnet_cli_ghinstaller_source_semver
     params: 
       bump: patch
-
   - task: create_dotnet_cli_ghinstaller_source_tarball
     config:
       platform: linux
@@ -153,7 +143,6 @@ jobs:
           popd
       outputs:
       - name: dotnet_cli_ghinstaller_source_tarball
-
   - task: push_dotnet_cli_ghinstaller_source_tarball_to_s3
     config:
       platform: linux
@@ -179,22 +168,19 @@ jobs:
           aws s3 cp dotnet_cli_ghinstaller_source_tarball/dotnet_cli_ghinstaller_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_ghinstaller_source_semver/version dotnet_cli_ghinstaller_source_semver/dotnet_cli_ghinstaller_source.tar.gz.version
           aws s3 cp dotnet_cli_ghinstaller_source_semver/dotnet_cli_ghinstaller_source.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: dotnet_cli_ghinstaller_source_semver
     params: 
       bump: patch
 
+### Fetch: dotnet_cli_yamlist_source ###
 - name: copy_dotnet_cli_yamlist_source_to_s3
   serial: true
   plan:
-
   - get: dotnet_cli_yamlist_source
     trigger: true
-
   - get: dotnet_cli_yamlist_source_semver
     params: 
       bump: patch
-
   - task: create_dotnet_cli_yamlist_source_tarball
     config:
       platform: linux
@@ -214,7 +200,6 @@ jobs:
           popd
       outputs:
       - name: dotnet_cli_yamlist_source_tarball
-
   - task: push_dotnet_cli_yamlist_source_tarball_to_s3
     config:
       platform: linux
@@ -240,22 +225,19 @@ jobs:
           aws s3 cp dotnet_cli_yamlist_source_tarball/dotnet_cli_yamlist_source.tar.gz s3://((aws_s3_bucket_name))/
           cp dotnet_cli_yamlist_source_semver/version dotnet_cli_yamlist_source_semver/dotnet_cli_yamlist_source.tar.gz.version
           aws s3 cp dotnet_cli_yamlist_source_semver/dotnet_cli_yamlist_source.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: dotnet_cli_yamlist_source_semver
     params: 
       bump: patch
 
+### Fetch: sql_d_source ###
 - name: copy_sql_d_source_to_s3
   serial: true
   plan:
-
   - get: sql_d_source
     trigger: true
-
   - get: sql_d_source_semver
     params: 
       bump: patch
-
   - task: create_sql_d_source_tarball
     config:
       platform: linux
@@ -275,7 +257,6 @@ jobs:
           popd
       outputs:
       - name: sql_d_source_tarball
-
   - task: push_sql_d_source_tarball_to_s3
     config:
       platform: linux
@@ -301,7 +282,6 @@ jobs:
           aws s3 cp sql_d_source_tarball/sql_d_source.tar.gz s3://((aws_s3_bucket_name))/
           cp sql_d_source_semver/version sql_d_source_semver/sql_d_source.tar.gz.version
           aws s3 cp sql_d_source_semver/sql_d_source.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: sql_d_source_semver
     params: 
       bump: patch
@@ -309,6 +289,7 @@ jobs:
 
 resources:
 
+### Git: concourse_fetch_source ###
 - name: concourse_fetch_source
   type: git
   source:
@@ -316,6 +297,7 @@ resources:
     private_key: ((github_private_key))
     uri: git@github.com:RealOrko/concourse-fetch.git
 
+### Git: dotnet_cli_zip_source ###
 - name: dotnet_cli_zip_source
   type: git
   source:
@@ -323,6 +305,7 @@ resources:
     private_key: ((github_private_key))
     uri: git@github.com:RealOrko/dotnet-cli-zip.git
 
+### Git: dotnet_cli_ghinstaller_source ###
 - name: dotnet_cli_ghinstaller_source
   type: git
   source:
@@ -330,6 +313,7 @@ resources:
     private_key: ((github_private_key))
     uri: git@github.com:RealOrko/dotnet-cli-ghinstaller.git
 
+### Git: dotnet_cli_yamlist_source ###
 - name: dotnet_cli_yamlist_source
   type: git
   source:
@@ -337,6 +321,7 @@ resources:
     private_key: ((github_private_key))
     uri: git@github.com:RealOrko/dotnet-cli-yamlist.git
 
+### Git: sql_d_source ###
 - name: sql_d_source
   type: git
   source:
@@ -345,6 +330,7 @@ resources:
     uri: git@github.com:RealOrko/sql-d.git
 
 
+### Semver: concourse_fetch_source ###
 - name: concourse_fetch_source_semver
   type: semver
   source:
@@ -355,6 +341,7 @@ resources:
     private_key: |
       ((github_private_key))
 
+### Semver: dotnet_cli_zip_source ###
 - name: dotnet_cli_zip_source_semver
   type: semver
   source:
@@ -365,6 +352,7 @@ resources:
     private_key: |
       ((github_private_key))
 
+### Semver: dotnet_cli_ghinstaller_source ###
 - name: dotnet_cli_ghinstaller_source_semver
   type: semver
   source:
@@ -375,6 +363,7 @@ resources:
     private_key: |
       ((github_private_key))
 
+### Semver: dotnet_cli_yamlist_source ###
 - name: dotnet_cli_yamlist_source_semver
   type: semver
   source:
@@ -385,6 +374,7 @@ resources:
     private_key: |
       ((github_private_key))
 
+### Semver: sql_d_source ###
 - name: sql_d_source_semver
   type: semver
   source:

@@ -2,17 +2,15 @@
 jobs:
 
 {{#each resources}}
+### Fetch: {{name}} ###
 - name: copy_{{name}}_to_s3
   serial: true
   plan:
-
   - get: {{name}}
     trigger: true
-
   - get: {{name}}_semver
     params: 
       bump: patch
-
   - task: create_{{name}}_tarball
     config:
       platform: linux
@@ -32,7 +30,6 @@ jobs:
           popd
       outputs:
       - name: {{name}}_tarball
-
   - task: push_{{name}}_tarball_to_s3
     config:
       platform: linux
@@ -58,7 +55,6 @@ jobs:
           aws s3 cp {{name}}_tarball/{{name}}.tar.gz s3://((aws_s3_bucket_name))/
           cp {{name}}_semver/version {{name}}_semver/{{name}}.tar.gz.version
           aws s3 cp {{name}}_semver/{{name}}.tar.gz.version s3://((aws_s3_bucket_name))/
-
   - put: {{name}}_semver
     params: 
       bump: patch
@@ -68,6 +64,7 @@ jobs:
 resources:
 
 {{#each resources}}
+### Git: {{name}} ###
 - name: {{name}}
   type: git
   source:
@@ -90,6 +87,7 @@ resources:
 {{/each}}
 
 {{#each resources}}
+### Semver: {{name}} ###
 - name: {{name}}_semver
   type: semver
   source:
