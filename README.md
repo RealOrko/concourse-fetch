@@ -1,6 +1,6 @@
 # concourse-fetch
 
-A repository for fetching github repo's and placing them on aws s3 with versioning using git.
+A repository for fetching github repo's and placing them on aws s3 with versioning using git, s3 and docker.io.
 
 ## Prerequisites
 
