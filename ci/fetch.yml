@@ -1,6 +1,36 @@
 
 jobs:
 
+### Fetch: concourse_fetch_source_other_s3 ###
+- name: copy_concourse_fetch_source_other_s3_to_s3
+  serial: true
+  plan:
+  - get: concourse_fetch_source_other_s3
+    trigger: true
+  - task: push_concourse_fetch_source_other_s3_tarball_to_s3
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source:
+          repository: realorko/aws-cli
+      inputs: 
+      - name: concourse_fetch_source_other_s3
+      run:
+        path: bash
+        args:
+        - -euc
+        - |
+          export DEBIAN_FRONTEND=noninteractive
+          export AWS_DEFAULT_REGION=((aws_default_region))
+          export AWS_ACCESS_KEY_ID=((aws_access_key_id))
+          export AWS_SECRET_ACCESS_KEY=((aws_secret_access_key))
+          aws sts get-caller-identity
+          aws s3 cp concourse_fetch_source_other_s3/concourse_fetch_source_other.tar.gz s3://((aws_s3_bucket_name))/
+          cp concourse_fetch_source_other_s3/version concourse_fetch_source_other_s3/concourse_fetch_source_other.tar.gz.version
+          aws s3 cp concourse_fetch_source_other_s3/concourse_fetch_source_other.tar.gz.version s3://((aws_s3_bucket_name))/
+
+
 ### Fetch: aws_cli_image ###
 - name: copy_aws_cli_image_to_s3
   plan:
@@ -426,4 +456,15 @@ resources:
     file: sql_d_source_version
     private_key: |
       ((github_private_key))
+
+
+### S3: concourse_fetch_source_other_s3 ###
+- name: concourse_fetch_source_other_s3
+  type: s3
+  source:
+    bucket: concourse-source
+    versioned_file: concourse_fetch_source_other.tar.gz
+    access_key_id: ((aws_access_key_id))
+    secret_access_key: ((aws_secret_access_key))
+    region_name: eu-west-1
 

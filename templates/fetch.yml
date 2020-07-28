@@ -1,6 +1,15 @@
 
 resources:
 
+  s3:
+
+  - name: concourse_fetch_source_other_s3
+    file: concourse_fetch_source_other.tar.gz
+    region: eu-west-1
+    bucket: concourse-source
+    access_key_id: ((aws_access_key_id)) 
+    secret_access_key: ((aws_secret_access_key))
+
   images:
 
   - name: aws_cli_image
