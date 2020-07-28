@@ -97,7 +97,7 @@ After adding a new git repository you can then run the following commands to see
 
 ### Promotion using branches
 
-If you wanted to source using promotion from a `foo` release branch then you would change it to this: 
+If you wanted to source using promotion from a `foo` release branch then you would change the repository source in [fetch.yml](https://github.com/RealOrko/concourse-fetch/blob/master/templates/fetch.yml) to look like this: 
 
 ```yml
   - name: concourse_fetch_foo_source
@@ -107,9 +107,7 @@ If you wanted to source using promotion from a `foo` release branch then you wou
     version_branch: foo_versions
 ```
 
-You could then for example release by merging master into foo, `master`->`foo`. Branches always have to be created in the source repositories before you fly the pipeline. 
-
-Try [bin/versionify](https://github.com/RealOrko/concourse-fetch/blob/master/bin/verionify) for any new branches you require before flying the pipeline making sure you adjust branch names appropriately.
+You could then for example release by merging master into foo, `master`->`foo`. Branches always have to be created in the source repositories before you fly the pipeline. Try [bin/versionify](https://github.com/RealOrko/concourse-fetch/blob/master/bin/verionify) for any new branches you require before flying the pipeline making sure you adjust branch names appropriately.
 
 ### S3 versioning
 
