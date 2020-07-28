@@ -1,5 +1,13 @@
 
-resources: 
+resources:
+
+  images:
+
+  - name: aws_cli_image_source
+    type: registry-image
+    repository: docker.io/realorko/aws-cli
+  
+  git:
 
   - name: concourse_fetch_source
     uri: git@github.com:RealOrko/concourse-fetch.git

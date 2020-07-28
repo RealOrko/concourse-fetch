@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+pushd docker
+docker build -t aws-cli .
+docker tag aws-cli realorko/aws-cli:1.0.2
+docker push realorko/aws-cli:1.0.2
+docker tag aws-cli realorko/aws-cli:latest
+docker push realorko/aws-cli:latest
+popd
